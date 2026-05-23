@@ -58,7 +58,7 @@
             .then(renderNews)
             .catch(error => {
                 console.error(error);
-                newsContainer.innerHTML = '';
+                newsContainer.innerHTML = '<p class="empty-state">Vesti trenutno nisu dostupne.</p>';
             });
     </script>
 </body>

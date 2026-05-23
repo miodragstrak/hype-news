@@ -1,0 +1,33 @@
+name: Update news cache
+
+on:
+  schedule:
+    # Runs every day at 06:00 UTC. GitHub schedules use UTC, not local time.
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-news:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: dom, mbstring
+
+      - name: Fetch latest news
+        run: php fetch.php
+
+      - name: Commit updated cache
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Update news cache"
+          file_pattern: cache/news.json
