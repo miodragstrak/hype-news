@@ -1,105 +1,65 @@
 <!DOCTYPE html>
-
-<html>
-
+<html lang="sr">
 <head>
-
-<link
-rel="stylesheet"
-href="style.css"
->
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hype News</title>
+    <link rel="icon" href="assets/hype-logo.png">
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+    <section class="news-section">
+        <div class="brand-mark">
+            <img src="assets/hype-logo.png" alt="Hype">
+        </div>
 
-<div id="news">
+        <div class="news-header">
+            <span>›</span>
+            <h2>VESTI</h2>
+        </div>
 
-</div>
+        <div class="banner" id="news"></div>
+    </section>
 
-<script>
+    <script>
+        const newsContainer = document.getElementById('news');
 
-fetch(
-'cache/news.json'
-)
+        function escapeHtml(value) {
+            return String(value ?? '').replace(/[&<>"']/g, character => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            }[character]));
+        }
 
-.then(
-r=>
-r.json()
-)
+        function renderNews(news) {
+            newsContainer.innerHTML = news.map(item => `
+                <a class="card" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">
+                    <div class="thumb">
+                        <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}">
+                    </div>
+                    <div class="content">
+                        <h3>${escapeHtml(item.title)}</h3>
+                    </div>
+                </a>
+            `).join('');
+        }
 
-.then(
-news=>{
+        fetch('cache/news.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Missing cache/news.json (${response.status})`);
+                }
 
-document
-.getElementById(
-'news'
-)
-
-.innerHTML=
-
-news
-.map(
-item=>
-
-`
-
-<a
-class="card"
-
-href="${
-item.url
-}"
-
-target="_blank"
-
->
-
-<img
-src="${
-item.image
-}"
->
-
-<h3>
-
-${
-item.title
-}
-
-</h3>
-
-<div>
-
-${
-item.published_at
-||
-
-''
-}
-
-</div>
-
-<div>
-
-${
-item.source
-}
-
-</div>
-
-</a>
-
-`
-
-)
-
-.join('');
-
-});
-
-</script>
-
+                return response.json();
+            })
+            .then(renderNews)
+            .catch(error => {
+                console.error(error);
+                newsContainer.innerHTML = '';
+            });
+    </script>
 </body>
-
 </html>
