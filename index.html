@@ -1,65 +1,77 @@
 <!DOCTYPE html>
-<html lang="sr">
+
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hype News</title>
-    <link rel="icon" href="assets/hype-logo.png">
-    <link rel="stylesheet" href="style.css">
+
+<link
+rel="stylesheet"
+href="style.css"
+>
+
+<link
+rel="preconnect"
+href="https://fonts.googleapis.com"
+>
+
+<link
+rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin
+>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800;900&display=swap"
+rel="stylesheet"
+>
+
 </head>
+
 <body>
-    <section class="news-section">
-        <div class="brand-mark">
-            <img src="assets/hype-logo.png" alt="Hype">
-        </div>
 
-        <div class="news-header">
-            <span>›</span>
-            <h2>VESTI</h2>
-        </div>
+<img
+class="logo"
+src="assets/hype-logo.png"
+>
 
-        <div class="banner" id="news"></div>
-    </section>
+<div
+class="news-wrapper">
 
-    <script>
-        const newsContainer = document.getElementById('news');
+<div
+class="section-title"
+>
 
-        function escapeHtml(value) {
-            return String(value ?? '').replace(/[&<>"']/g, character => ({
-                '&': '&amp;',
-                '<': '&lt;',
-                '>': '&gt;',
-                '"': '&quot;',
-                "'": '&#039;'
-            }[character]));
-        }
+<span>
 
-        function renderNews(news) {
-            newsContainer.innerHTML = news.map(item => `
-                <a class="card" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">
-                    <div class="thumb">
-                        <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}">
-                    </div>
-                    <div class="content">
-                        <h3>${escapeHtml(item.title)}</h3>
-                    </div>
-                </a>
-            `).join('');
-        }
+›
 
-        fetch('cache/news.json')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Missing cache/news.json (${response.status})`);
-                }
+</span>
 
-                return response.json();
-            })
-            .then(renderNews)
-            .catch(error => {
-                console.error(error);
-                newsContainer.innerHTML = '<p class="empty-state">Vesti trenutno nisu dostupne.</p>';
-            });
-    </script>
+VESTI
+
+<span
+class="subtitle"
+>
+
+BOR I ZAJEČAR ONLINE
+
+</span>
+
+</div>
+
+<div
+id="news"
+class="banner">
+
+</div>
+
+</div>
+<script
+src="app.js"
+>
+
+</script>
+
 </body>
+
 </html>
